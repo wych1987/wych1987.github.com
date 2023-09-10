@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.56way.com/2023/09/10/first-screen-speed/</loc>
+    
+    <lastmod>2023-09-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.56way.com/2023/09/07/react_setState/</loc>
+    
+    <lastmod>2023-09-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.56way.com/2023/09/08/NPM_interface/</loc>
     
     <lastmod>2023-09-10</lastmod>
@@ -12,15 +30,6 @@
   
   <url>
     <loc>https://www.56way.com/2023/09/10/ke_zhuan_zhai/</loc>
-    
-    <lastmod>2023-09-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.56way.com/2023/09/07/react_setState/</loc>
     
     <lastmod>2023-09-10</lastmod>
     
@@ -54,14 +63,14 @@
   </url>
   
   <url>
-    <loc>https://www.56way.com/tags/%E7%90%86%E8%B4%A2/</loc>
+    <loc>https://www.56way.com/tags/web/</loc>
     <lastmod>2023-09-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://www.56way.com/tags/react/</loc>
+    <loc>https://www.56way.com/tags/%E7%90%86%E8%B4%A2/</loc>
     <lastmod>2023-09-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
