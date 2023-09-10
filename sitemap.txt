@@ -1,6 +1,8 @@
+https://www.56way.com/2023/09/07/ke_zhuan_zhai/
 https://www.56way.com/2023/09/07/NPM_interface/
 https://www.56way.com/2023/09/07/react_setState/
 https://www.56way.com/about/index.html
 https://www.56way.com/
-https://www.56way.com/tags/NPM-Interface-TypeScript/
-https://www.56way.com/tags/react-setState-%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0/
+https://www.56way.com/tags/typescript/
+https://www.56way.com/tags/%E7%90%86%E8%B4%A2/
+https://www.56way.com/tags/react/
