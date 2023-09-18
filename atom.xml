@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.56way.com/"/>
-  <updated>2023-09-18T11:39:30.456Z</updated>
+  <updated>2023-09-18T11:50:10.311Z</updated>
   <id>https://www.56way.com/</id>
   
   <author>
@@ -17,13 +17,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>USD_option</title>
+    <title>USD_option_SPY</title>
     <link href="https://www.56way.com/2023/09/18/USD-option/"/>
     <id>https://www.56way.com/2023/09/18/USD-option/</id>
     <published>2023-09-18T11:00:46.000Z</published>
-    <updated>2023-09-18T11:39:30.456Z</updated>
+    <updated>2023-09-18T11:50:10.311Z</updated>
     
-    <content type="html"><![CDATA[<p>无意中在知乎翻到一个人分享的美股期权操作，就copy一下对方的操作，顺便熟悉一下这个理财工具<br><a href="https://zhuanlan.zhihu.com/p/653400473">分享一个小仓位操作——期权策略</a></p><p>摘要如下：</p><blockquote><p>买入SPY的231229的380PUT，2张，同时卖出231229的CALL，1张<br>——前一个操作投入资金780刀<br>——后一个操作投入获得资金881刀<br>期限是大约4个月。<br>方向是判断下跌。</p></blockquote><p>****  SPY，即$标普500 ETF-SPDR(SPY)$ *****.</p><p>参考他的操作我也来了一份</p><blockquote><p>SPY240119C470000 卖出一份期权470的CALL $467<br>SPY240119P380000 买入2份380的PUT $464 </p></blockquote><p>但是我有个疑问：</p><p>如果我持仓不动 这份470的CALL我最多赚取470美金，但是他也会有波动 貌似我也可以通过这个波动率来赚钱</p><p>同理380的这个PUT 只有SPY价格跌到380以下的时候我才会赚钱么？他本身的波动好像也挺高的。</p><p>还不是很懂，买了两本期权的书边学边看，</p><p>反正做空SPY 就行了，我就不相信利息这么高，它还能涨到天上去。。。</p><p>本文作者：番茄炒蛋<br />本文地址： <a href="https://www.56way.com/2023/09/18/USD-option/">https://www.56way.com/2023/09/18/USD-option/</a> <br />版权声明：转载请注明出处！</p>]]></content>
+    <content type="html"><![CDATA[<p>无意中在知乎翻到一个人分享的美股期权操作，就copy一下对方的操作，顺便熟悉一下这个理财工具<br><a href="https://zhuanlan.zhihu.com/p/653400473">分享一个小仓位操作——期权策略</a></p><p>摘要如下：</p><blockquote><p>买入SPY的231229的380PUT，2张，同时卖出231229的CALL，1张<br>——前一个操作投入资金780刀<br>——后一个操作投入获得资金881刀<br>期限是大约4个月。<br>方向是判断下跌。</p></blockquote><p>****  SPY，即$标普500 ETF-SPDR(SPY)$ *****.</p><p>参考他的操作我也来了一份</p><blockquote><p>SPY240119C470000 卖出一份期权470的CALL $467<br>SPY240119P380000 买入2份380的PUT $464 </p></blockquote><p>但是我有个疑问：</p><p>如果我持仓不动 这份470的CALL我最多赚取470美金，但是他也会有波动 貌似我也可以通过这个波动率来赚钱</p><p>同理380的这个PUT 只有SPY价格跌到380以下的时候我才会赚钱么？他本身的波动好像也挺高的。</p><p>还不是很懂，买了两本期权的书边学边看，</p><p>反正做空SPY 就行了，我就不相信利息这么高，它还能涨到天上去。。。</p><p>参考文档:<br>-<a href="https://mp.weixin.qq.com/s/twsMqpTrNuH8z7wcbakg3g">美股期权交易策略整理</a></p><p>本文作者：番茄炒蛋<br />本文地址： <a href="https://www.56way.com/2023/09/18/USD-option/">https://www.56way.com/2023/09/18/USD-option/</a> <br />版权声明：转载请注明出处！</p>]]></content>
     
     <summary type="html">
     
