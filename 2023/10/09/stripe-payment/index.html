@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>stripe-payment | 一些碎碎念</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" type="text/css" href="/css/prism.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">stripe-payment</h1><a id="logo" href="/.">一些碎碎念</a><p class="description">路漫漫其修远兮，边走边看吧</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">stripe-payment</h1><div class="post-meta">2023-10-09</div><a class="disqus-comment-count" href="/2023/10/09/stripe-payment/#vcomment"><span class="valine-comment-count" data-xid="/2023/10/09/stripe-payment/"></span><span> 条评论</span></a><div class="post-content"><p>最近接收项目遇到一个bug, 使用stripe的payment相关支付的时候页面展示的元素重复，见下图</p>
+<p><img src="/images/stripe.jpg"></p>
+<p>相关代码如下</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">  <span class="token keyword">const</span> <span class="token literal-property property">paymentElementOptions</span><span class="token operator">:</span> any <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">layout</span><span class="token operator">:</span> <span class="token string">'tabs'</span>
+  <span class="token punctuation">&#125;</span>
+
+<span class="token operator">&lt;</span>form id<span class="token operator">=</span><span class="token string">"payment-form"</span> onSubmit<span class="token operator">=</span><span class="token punctuation">&#123;</span>handleSubmit<span class="token punctuation">&#125;</span> className<span class="token operator">=</span><span class="token string">"text-cap"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>LinkAuthenticationElement id<span class="token operator">=</span><span class="token string">"link-authentication-element"</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>AddressElement options<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">mode</span><span class="token operator">:</span> <span class="token string">'billing'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>PaymentElement id<span class="token operator">=</span><span class="token string">"payment-element"</span> options<span class="token operator">=</span><span class="token punctuation">&#123;</span>paymentElementOptions<span class="token punctuation">&#125;</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Center<span class="token operator">></span>
+        <span class="token operator">&lt;</span>Button my<span class="token operator">=</span><span class="token string">"4"</span> colorScheme<span class="token operator">=</span><span class="token string">"green"</span> type<span class="token operator">=</span><span class="token string">"submit"</span> disabled<span class="token operator">=</span><span class="token punctuation">&#123;</span>isLoading <span class="token operator">||</span> <span class="token operator">!</span>stripe <span class="token operator">||</span> <span class="token operator">!</span>elements<span class="token punctuation">&#125;</span> id<span class="token operator">=</span><span class="token string">"submit"</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>span id<span class="token operator">=</span><span class="token string">"button-text"</span><span class="token operator">></span><span class="token punctuation">&#123;</span>isLoading <span class="token operator">?</span> <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"spinner"</span> id<span class="token operator">=</span><span class="token string">"spinner"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span> <span class="token operator">:</span> <span class="token string">'Pay Now'</span><span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>Button<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Center<span class="token operator">></span>
+      <span class="token punctuation">&#123;</span><span class="token comment">/* Show any error or success messages */</span><span class="token punctuation">&#125;</span>
+      <span class="token operator">&lt;</span>Center<span class="token operator">></span><span class="token punctuation">&#123;</span>message <span class="token operator">&amp;&amp;</span> <span class="token operator">&lt;</span>div id<span class="token operator">=</span><span class="token string">"payment-message"</span><span class="token operator">></span><span class="token punctuation">&#123;</span>message<span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>Center<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>form<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>产品的诉求是需要用户填写相关address的信息<br>看代码 猜测应该是相关配置缺失导致的，<br>第一次接触stripe这个支付的SDK，翻看了一下相关文档，<a target="_blank" rel="noopener" href="https://stripe.com/docs/stripe-js/react">https://stripe.com/docs/stripe-js/react</a><br>咋一看没发现有什么不对，也没找到相关配置信息，耐着性子一个一个翻，</p>
+<p>终于在<a target="_blank" rel="noopener" href="https://stripe.com/docs/js/elements_object/create_payment_element#payment_element_create-customized_fieldss">payment_element_create-customized_fieldss</a>的文档中找到了一些配置信息</p>
+<h3 id="paymane-element"><a href="#paymane-element" class="headerlink" title="paymane_element"></a>paymane_element</h3> <font color="green">
+  billingDetails: 'never' | 'auto' | object
+  Specify never to avoid collecting all billing details in the Payment Element. 
+ If you would like to disable only certain billing details, 
+  pass an object specifying which fields you would like to disable collection for.
+  The default setting for each field or object is auto.
+ 
+ </font>
+
+<p>大意就是可以配置相关支付选项的配置信息,有这些配置 默认是auto</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">
+<span class="token literal-property property">name</span><span class="token operator">:</span>
+<span class="token string">'never'</span> <span class="token operator">|</span> <span class="token string">'auto'</span>
+<span class="token literal-property property">email</span><span class="token operator">:</span>
+<span class="token string">'never'</span> <span class="token operator">|</span> <span class="token string">'auto'</span>
+<span class="token literal-property property">phone</span><span class="token operator">:</span>
+<span class="token string">'never'</span> <span class="token operator">|</span> <span class="token string">'auto'</span>
+<span class="token literal-property property">address</span><span class="token operator">:</span>
+<span class="token string">'never'</span> <span class="token operator">|</span> <span class="token string">'auto'</span> <span class="token operator">|</span> object
+<span class="token comment">// 使用方法</span>
+<span class="token keyword">var</span> paymentElement <span class="token operator">=</span> elements<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token string">'payment'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">fields</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">billingDetails</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'never'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">email</span><span class="token operator">:</span> <span class="token string">'never'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="有一段注意事项："><a href="#有一段注意事项：" class="headerlink" title="有一段注意事项："></a>有一段注意事项：</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://stripe.com/docs/js/elements_object/create_payment_element#payment_element_create-options-fields">https://stripe.com/docs/js/elements_object&#x2F;create_payment_element#payment_element_create-options-fields</a></li>
+</ul>
+<p>By default, the Payment Element will collect all necessary details to complete a payment.</p>
+<p>For some payment methods, this means that the Payment Element will collect details like name or email that you may have already collected from the user. If this is the case, you can prevent the Payment Element from collecting these data by using the fields option.</p>
+<p><font color='red'>If you disable the collection of a certain field with the fields option, you must pass that same data to stripe.confirmPayment or the payment will be rejected.</p>
+<p>See below for details.</font></p>
+<p>大意就说：默认情况下，付款元素将收集完成付款所需的所有详细信息。</p>
+<p>对于某些付款方式，这意味着付款元素将收集您可能已从用户那里收集的详细信息，例如姓名或电子邮件。如果是这种情况，您可以使用该选项阻止付款元素收集这些数据fields。</p>
+<p><font color='red'>如果您使用该选项禁用某个字段的收集fields，则必须将相同的数据传递给stripe.confirmPayment ，否则付款将被拒绝</font></p>
+<p> 下面找到 address_element 就好了 </p>
+<h3 id="address-element"><a href="#address-element" class="headerlink" title="address_element"></a>address_element</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://stripe.com/docs/js/element/address_element">https://stripe.com/docs/js/element/address_element</a></li>
+</ul>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>  <font color="red">使用这种方式监听地址变化是有bug的<br>  当你使用chrome的自动填充地址信息的时候，你会发现并没有触发这个onChange的事件<br>  </font></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">
+  <span class="token keyword">const</span> <span class="token function-variable function">handleAddressChange</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>complete<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// Extract potentially complete address</span>
+      <span class="token keyword">const</span> address <span class="token operator">=</span> event<span class="token punctuation">.</span>value<span class="token punctuation">.</span>address
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span>
+      <span class="token function">setAddress</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token operator">&lt;</span>AddressElement options<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">mode</span><span class="token operator">:</span> <span class="token string">'billing'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> onChange<span class="token operator">=</span><span class="token punctuation">&#123;</span>handleAddressChange<span class="token punctuation">&#125;</span> <span class="token operator">/</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>不过它提供了另外一种方式</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> PaymentElement<span class="token punctuation">,</span> LinkAuthenticationElement<span class="token punctuation">,</span> useStripe<span class="token punctuation">,</span> AddressElement<span class="token punctuation">,</span> useElements <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'@stripe/react-stripe-js'</span>
+
+
+ <span class="token keyword">const</span> elements <span class="token operator">=</span> <span class="token function">useElements</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">getAddressValue</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>elements<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> addressElement <span class="token operator">=</span> elements<span class="token punctuation">.</span><span class="token function">getElement</span><span class="token punctuation">(</span><span class="token string">'address'</span><span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>addressElement<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> complete<span class="token punctuation">,</span> value <span class="token punctuation">&#125;</span> <span class="token operator">=</span> <span class="token keyword">await</span> addressElement<span class="token operator">?.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>complete<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          <span class="token comment">// Allow user to proceed to the next step</span>
+          <span class="token comment">// Optionally, use value to store the address details</span>
+          console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+          <span class="token keyword">return</span> value
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>另外需要注意address的value的返回值不仅仅是地址，还有name等字段</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
+    name<span class="token punctuation">,</span>
+    email<span class="token punctuation">,</span>
+    phone<span class="token punctuation">,</span>
+    <span class="token literal-property property">address</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+        line1<span class="token punctuation">,</span>
+        line2<span class="token punctuation">,</span>
+        city<span class="token punctuation">,</span>
+        state<span class="token punctuation">,</span>
+        country<span class="token punctuation">,</span>
+        postalCode<span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>有点矛盾的地方<br><a target="_blank" rel="noopener" href="https://stripe.com/docs/js/elements_object/create_address_element#address_element_create-options-mode">https://stripe.com/docs/js/elements_object&#x2F;create_address_element#address_element_create-options-mode</a></p>
+<hr>
+<p>Specify which mode you would like to use Address Element for.</p>
+<p> When shipping mode is used with the Payment Element and Link Authentication Element, it will automatically pass shipping information when confirming Payment Intent or Setup Intent.</p>
+<p>When billing mode is used with the Payment Element, it will automatically pass the billing information when confirming Payment Intent or Setup Intent.</p>
+<h2 id="大意是说当-Address-Element-与Payment-Element联合使用的时候会自动把相关信息带入到支付信息里，实测也确实如此，不过保险起见，也可以自己手动传入"><a href="#大意是说当-Address-Element-与Payment-Element联合使用的时候会自动把相关信息带入到支付信息里，实测也确实如此，不过保险起见，也可以自己手动传入" class="headerlink" title="大意是说当  Address Element 与Payment Element联合使用的时候会自动把相关信息带入到支付信息里，实测也确实如此，不过保险起见，也可以自己手动传入"></a>大意是说当  Address Element 与Payment Element联合使用的时候会自动把相关信息带入到支付信息里，实测也确实如此，不过保险起见，也可以自己手动传入</h2><h3 id="最终的解决"><a href="#最终的解决" class="headerlink" title="最终的解决"></a>最终的解决</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">
+<span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> useState<span class="token punctuation">,</span> useImperativeHandle<span class="token punctuation">,</span> forwardRef <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'react'</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> PaymentElement<span class="token punctuation">,</span> LinkAuthenticationElement<span class="token punctuation">,</span> useStripe<span class="token punctuation">,</span> AddressElement<span class="token punctuation">,</span> useElements <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'@stripe/react-stripe-js'</span>
+ 
+ 
+<span class="token keyword">export</span> <span class="token keyword">const</span> CheckoutForm <span class="token operator">=</span> <span class="token function">forwardRef</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">MyInput</span><span class="token punctuation">(</span><span class="token parameter">props<span class="token punctuation">,</span> ref</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> stripe <span class="token operator">=</span> <span class="token function">useStripe</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> elements <span class="token operator">=</span> <span class="token function">useElements</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+ 
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>email<span class="token punctuation">,</span> setEmail<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+ 
+  <span class="token keyword">const</span> <span class="token literal-property property">paymentElementOptions</span><span class="token operator">:</span> any <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">layout</span><span class="token operator">:</span> <span class="token string">'tabs'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">fields</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">billingDetails</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'never'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">email</span><span class="token operator">:</span> <span class="token string">'never'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">address</span><span class="token operator">:</span> <span class="token string">'never'</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">getAddressValue</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>elements<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> addressElement <span class="token operator">=</span> elements<span class="token punctuation">.</span><span class="token function">getElement</span><span class="token punctuation">(</span><span class="token string">'address'</span><span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>addressElement<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> complete<span class="token punctuation">,</span> value <span class="token punctuation">&#125;</span> <span class="token operator">=</span> <span class="token keyword">await</span> addressElement<span class="token operator">?.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>complete<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          <span class="token comment">// Allow user to proceed to the next step</span>
+          <span class="token comment">// Optionally, use value to store the address details</span>
+          console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+          <span class="token keyword">return</span> value
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">handleSubmit</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">e</span><span class="token operator">:</span> any</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    e<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>stripe <span class="token operator">||</span> <span class="token operator">!</span>elements<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> addressValue <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token function">getAddressValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">as</span> any
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'===addressValue=='</span><span class="token punctuation">,</span> addressValue<span class="token punctuation">)</span>
+      <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> error <span class="token punctuation">&#125;</span><span class="token operator">:</span> any <span class="token operator">=</span> <span class="token keyword">await</span> stripe<span class="token punctuation">.</span><span class="token function">confirmPayment</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        elements<span class="token punctuation">,</span>
+        <span class="token literal-property property">confirmParams</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token literal-property property">return_url</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>origin<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">/payment/completion</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+          <span class="token literal-property property">payment_method_data</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token literal-property property">billing_details</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+              <span class="token literal-property property">email</span><span class="token operator">:</span> email<span class="token punctuation">,</span>
+              <span class="token operator">...</span>addressValue<span class="token punctuation">,</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+          <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>error<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token string">'card_error'</span> <span class="token operator">||</span> error<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token string">'validation_error'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">setMessage</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>message<span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">setMessage</span><span class="token punctuation">(</span><span class="token string">'An unexpected error occurred.'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  
+  <span class="token punctuation">&#125;</span>
+
+ 
+ 
+  <span class="token keyword">const</span> <span class="token function-variable function">handleLinkChange</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> email <span class="token operator">=</span> event<span class="token punctuation">.</span>value<span class="token punctuation">.</span>email
+    <span class="token function">setEmail</span><span class="token punctuation">(</span>email<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>form id<span class="token operator">=</span><span class="token string">"payment-form"</span> onSubmit<span class="token operator">=</span><span class="token punctuation">&#123;</span>handleSubmit<span class="token punctuation">&#125;</span> className<span class="token operator">=</span><span class="token string">"text-cap"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>LinkAuthenticationElement id<span class="token operator">=</span><span class="token string">"link-authentication-element"</span> onChange<span class="token operator">=</span><span class="token punctuation">&#123;</span>handleLinkChange<span class="token punctuation">&#125;</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>AddressElement options<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">mode</span><span class="token operator">:</span> <span class="token string">'billing'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>   <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>PaymentElement id<span class="token operator">=</span><span class="token string">"payment-element"</span> options<span class="token operator">=</span><span class="token punctuation">&#123;</span>paymentElementOptions<span class="token punctuation">&#125;</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>Center<span class="token operator">></span>
+        <span class="token operator">&lt;</span>Button my<span class="token operator">=</span><span class="token string">"4"</span> colorScheme<span class="token operator">=</span><span class="token string">"green"</span> type<span class="token operator">=</span><span class="token string">"submit"</span> disabled<span class="token operator">=</span><span class="token punctuation">&#123;</span>isLoading <span class="token operator">||</span> <span class="token operator">!</span>stripe <span class="token operator">||</span> <span class="token operator">!</span>elements<span class="token punctuation">&#125;</span> id<span class="token operator">=</span><span class="token string">"submit"</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>span id<span class="token operator">=</span><span class="token string">"button-text"</span><span class="token operator">></span><span class="token punctuation">&#123;</span>isLoading <span class="token operator">?</span> <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"spinner"</span> id<span class="token operator">=</span><span class="token string">"spinner"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span> <span class="token operator">:</span> <span class="token string">'Pay Now'</span><span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>Button<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Center<span class="token operator">></span>
+      <span class="token punctuation">&#123;</span><span class="token comment">/* Show any error or success messages */</span><span class="token punctuation">&#125;</span>
+      <span class="token operator">&lt;</span>Center<span class="token operator">></span><span class="token punctuation">&#123;</span>message <span class="token operator">&amp;&amp;</span> <span class="token operator">&lt;</span>div id<span class="token operator">=</span><span class="token string">"payment-message"</span><span class="token operator">></span><span class="token punctuation">&#123;</span>message<span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>Center<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>form<span class="token operator">></span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>本文作者：番茄炒蛋<br />本文地址： <a href="https://www.56way.com/2023/10/09/stripe-payment/">https://www.56way.com/2023/10/09/stripe-payment/</a> <br />版权声明：转载请注明出处！</p>
+</div><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li></ul></div><div class="post-nav"><a class="next" href="/2023/09/18/USD-option/">USD_option_SPY</a></div><div class="nofancybox" id="vcomment"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == 'true' ? true : false;
+var verify = 'false' == 'true' ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'qRUb5ezrBE5yTKOj5mHqbUEK-gzGzoHsz',
+  appKey:'sNTjZX5EQcMV03lzSQvr7Rch',
+  serverURLs:'https://qrub5ezr.lc-cn-n1-shared.com',
+  placeholder:'Just so so',
+  avatar:'mm',
+  guest_info:guest_info,
+  pageSize:'10'
+})
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://www.56way.com"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/images/avatar.jpeg"/></a><p>人生之路如修行</p><a class="info-icon" href="https://github.com/wych1987" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/typescript/" style="font-size: 15px;">typescript</a> <a href="/tags/web/" style="font-size: 15px;">web</a> <a href="/tags/%E7%90%86%E8%B4%A2/" style="font-size: 15px;">理财</a> <a href="/tags/%E5%8F%A8%E5%8F%A8/" style="font-size: 15px;">叨叨</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/10/09/stripe-payment/">stripe-payment</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/18/USD-option/">USD_option_SPY</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/16/Nullish-coalescing/">空值合并运算符（??）</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/12/sep-something/">九月的一些回想</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/10/first-screen-speed/">页面首屏渲染优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/10/ke_zhuan_zhai/">可转债基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/08/NPM_interface/">typescript修改npm包的类型定义</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/07/react_setState/">react setState同步更新与异步更新</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2023 <a href="/." rel="nofollow">一些碎碎念.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
