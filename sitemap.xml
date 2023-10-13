@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.noway.pub/2023/09/18/USD-option/</loc>
+    
+    <lastmod>2023-10-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.noway.pub/2023/10/12/pdf_error-FormatError_Bad_FCHECK/</loc>
     
     <lastmod>2023-10-13</lastmod>
@@ -14,15 +23,6 @@
     <loc>https://www.noway.pub/2023/10/09/stripe-payment/</loc>
     
     <lastmod>2023-10-09</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.noway.pub/2023/09/18/USD-option/</loc>
-    
-    <lastmod>2023-09-18</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -101,13 +101,6 @@
 
   
   <url>
-    <loc>https://www.noway.pub/tags/typescript/</loc>
-    <lastmod>2023-10-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://www.noway.pub/tags/web/</loc>
     <lastmod>2023-10-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -123,6 +116,13 @@
   
   <url>
     <loc>https://www.noway.pub/tags/%E5%8F%A8%E5%8F%A8/</loc>
+    <lastmod>2023-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.noway.pub/tags/typescript/</loc>
     <lastmod>2023-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
