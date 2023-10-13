@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.noway.pub","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="我们在使用TS进行开发的时候有时候会遇到第三方库的类型限制导致TS校验不同的情况，这样就需要我们自己重新去定义这个第三库的类型声明文件，今天遇到这个坑，记录一下解决办法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="typescript修改npm包的类型定义">
+<meta property="og:url" content="https://www.noway.pub/2023/09/08/NPM_interface/index.html">
+<meta property="og:site_name" content="一些碎碎念">
+<meta property="og:description" content="我们在使用TS进行开发的时候有时候会遇到第三方库的类型限制导致TS校验不同的情况，这样就需要我们自己重新去定义这个第三库的类型声明文件，今天遇到这个坑，记录一下解决办法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.noway.pub/images/ts-error.png">
+<meta property="article:published_time" content="2023-09-08T12:11:14.000Z">
+<meta property="article:modified_time" content="2023-09-10T08:36:42.132Z">
+<meta property="article:author" content="番茄炒蛋">
+<meta property="article:tag" content="typescript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.noway.pub/images/ts-error.png">
+
+
+<link rel="canonical" href="https://www.noway.pub/2023/09/08/NPM_interface/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.noway.pub/2023/09/08/NPM_interface/","path":"2023/09/08/NPM_interface/","title":"typescript修改npm包的类型定义"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>typescript修改npm包的类型定义 | 一些碎碎念</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">一些碎碎念</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">路漫漫其修远兮，边走边看吧</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E6%B1%82%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">需求背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4%E5%A6%82%E4%B8%8B"><span class="nav-number">2.</span> <span class="nav-text">具体步骤如下</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="番茄炒蛋"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">番茄炒蛋</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.noway.pub/2023/09/08/NPM_interface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="番茄炒蛋">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一些碎碎念">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="typescript修改npm包的类型定义 | 一些碎碎念">
+      <meta itemprop="description" content="我们在使用TS进行开发的时候有时候会遇到第三方库的类型限制导致TS校验不同的情况，这样就需要我们自己重新去定义这个第三库的类型声明文件，今天遇到这个坑，记录一下解决办法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          typescript修改npm包的类型定义
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-08 20:11:14" itemprop="dateCreated datePublished" datetime="2023-09-08T20:11:14+08:00">2023-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-09-10 16:36:42" itemprop="dateModified" datetime="2023-09-10T16:36:42+08:00">2023-09-10</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">我们在使用TS进行开发的时候有时候会遇到第三方库的类型限制导致TS校验不同的情况，这样就需要我们自己重新去定义这个第三库的类型声明文件，今天遇到这个坑，记录一下解决办法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>我们在使用TS进行开发的时候有时候会遇到第三方库的类型限制导致TS校验不同的情况，这样就需要我们自己重新去定义这个第三库的类型声明文件，今天遇到这个坑，记录一下解决办法。</p>
+<p>正常的一个TS文件如下，就是页面展示一个日期选择器，用的组件是三方库 chakra-dayzed-datepicker</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> RangeDatepicker <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'chakra-dayzed-datepicker'</span>
+<span class="token keyword">function</span> <span class="token function">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>timeDate<span class="token punctuation">,</span> setTimeDate<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token generic-function"><span class="token function">useState</span><span class="token generic class-name"><span class="token operator">&lt;</span>Date<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token string">'2023/08/10'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token string">'2023/09/10'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment">// 填充默认时间</span>
+  <span class="token keyword">return</span>  <span class="token operator">&lt;</span>RangeDatepicker selectedDates<span class="token operator">=</span><span class="token punctuation">&#123;</span>timeDate<span class="token punctuation">&#125;</span><span class="token operator">/</span><span class="token operator">></span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h3><blockquote>
+<p>  进入页面的初始化时候，默认日期为空</p>
+</blockquote>
+<p> 一分钟搞定<br> <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> RangeDatepicker <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'chakra-dayzed-datepicker'</span>
+   <span class="token keyword">function</span> <span class="token function">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+       <span class="token keyword">const</span> <span class="token punctuation">[</span>timeDate<span class="token punctuation">,</span> setTimeDate<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token generic-function"><span class="token function">useState</span><span class="token generic class-name"><span class="token operator">&lt;</span>Date<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">|</span><span class="token keyword">undefined</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment">// 填充默认时间为空</span>
+       <span class="token keyword">return</span>  <span class="token operator">&lt;</span>RangeDatepicker selectedDates<span class="token operator">=</span><span class="token punctuation">&#123;</span>timeDate<span class="token punctuation">&#125;</span><span class="token operator">/</span><span class="token operator">></span>
+   <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><br> 但是，RangeDatepicker 这个组件就报错了<br> <img src="/images/ts-error.png"><br><font color='red'><br>    不能将类型“Date[] | undefined[]”分配给类型“Date[]”。<br>    不能将类型“undefined[]”分配给类型“Date[]”。<br>    不能将类型“undefined”分配给类型“Date”<br></font></p>
+<p>现在问题变成怎么修改 *** chakra-dayzed-datepicker*** 的声明类型</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Props <span class="token keyword">as</span> DayzedHookProps <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'dayzed'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> CalendarConfigs<span class="token punctuation">,</span> DatepickerConfigs<span class="token punctuation">,</span> DatepickerProps<span class="token punctuation">,</span> PropsConfigs <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'./utils/commonTypes'</span><span class="token punctuation">;</span>
+<span class="token keyword">interface</span> <span class="token class-name">RangeCalendarPanelProps</span> <span class="token punctuation">&#123;</span>
+    dayzedHookProps<span class="token operator">:</span> DayzedHookProps<span class="token punctuation">;</span>
+    configs<span class="token operator">:</span> CalendarConfigs<span class="token punctuation">;</span>
+    propsConfigs<span class="token operator">?</span><span class="token operator">:</span> PropsConfigs<span class="token punctuation">;</span>
+    selected<span class="token operator">?</span><span class="token operator">:</span> Date <span class="token operator">|</span> Date<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">export</span> <span class="token keyword">declare</span> <span class="token keyword">const</span> RangeCalendarPanel<span class="token operator">:</span> React<span class="token punctuation">.</span><span class="token constant">FC</span><span class="token operator">&lt;</span>RangeCalendarPanelProps<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">RangeDatepickerProps</span> <span class="token keyword">extends</span> <span class="token class-name">DatepickerProps</span> <span class="token punctuation">&#123;</span>
+    selectedDates<span class="token operator">:</span> Date<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 
+    configs<span class="token operator">?</span><span class="token operator">:</span> DatepickerConfigs<span class="token punctuation">;</span>
+    disabled<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+    defaultIsOpen<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+    closeOnSelect<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+    <span class="token function-variable function">onDateChange</span><span class="token operator">:</span> <span class="token punctuation">(</span>date<span class="token operator">:</span> Date<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">void</span><span class="token punctuation">;</span>
+    id<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    name<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    usePortal<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">export</span> <span class="token keyword">declare</span> <span class="token keyword">const</span> RangeDatepicker<span class="token operator">:</span> React<span class="token punctuation">.</span><span class="token constant">FC</span><span class="token operator">&lt;</span>RangeDatepickerProps<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>直接修改NPM包肯定是不行的，这NPM部署安装一下就是新的所以我们需要<br>重新定义一下RangeDatepickerProps</p>
+<h3 id="具体步骤如下"><a href="#具体步骤如下" class="headerlink" title="具体步骤如下"></a>具体步骤如下</h3><blockquote>
+<p>1.在项目tsconfig.json同级目录新建一个types目录<br>2.创建文件RangeDatepicker.d.ts<br>3.修改tsconfig.json配置的compilerOptions属性指定chakra-dayzed-datepicker的申明文件</p>
+</blockquote>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token string-property property">"compilerOptions"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+   <span class="token string-property property">"paths"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+     <span class="token string-property property">"chakra-dayzed-datepicker"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"./types/rangeDatepicker"</span><span class="token punctuation">]</span>
+   <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>rangeDatepicker.d.ts文件内容如下</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">//rangeDatepicker.d.ts</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> RangeDatepickerProps <span class="token keyword">as</span> LibRangeDatepickerProps <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'chakra-dayzed-datepicker/src/'</span>
+<span class="token comment">// 导出RangeDatepickerProps</span>
+<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">'chakra-dayzed-datepicker'</span><span class="token comment">// 默认接口导出</span>
+<span class="token keyword">type</span> <span class="token class-name">RangeDatepickerPropsLess</span> <span class="token operator">=</span> Omit<span class="token operator">&lt;</span>LibRangeDatepickerProps<span class="token punctuation">,</span> <span class="token string">'selectedDates'</span><span class="token operator">></span><span class="token comment">// Omit 干掉selectedDates</span>
+<span class="token keyword">interface</span> <span class="token class-name">RangeDatepickerProps</span> <span class="token keyword">extends</span> <span class="token class-name">RangeDatepickerPropsLess</span> <span class="token punctuation">&#123;</span>
+  selectedDates<span class="token operator">:</span> <span class="token builtin">Array</span><span class="token operator">&lt;</span>Date <span class="token operator">|</span> <span class="token keyword">undefined</span><span class="token operator">></span> <span class="token comment">// 复写 selectedDates</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">export</span> <span class="token keyword">declare</span> <span class="token keyword">const</span> RangeDatepicker<span class="token operator">:</span> React<span class="token punctuation">.</span><span class="token constant">FC</span><span class="token operator">&lt;</span>RangeDatepickerProps<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>本文作者：番茄炒蛋<br />本文地址： <a href="https://www.noway.pub/2023/09/08/NPM_interface/">https://www.noway.pub/2023/09/08/NPM_interface&#x2F;</a> <br />版权声明：转载请注明出处！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/typescript/" rel="tag"># typescript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/07/react_setState/" rel="prev" title="react setState同步更新与异步更新">
+                  <i class="fa fa-angle-left"></i> react setState同步更新与异步更新
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/10/ke_zhuan_zhai/" rel="next" title="可转债基础知识">
+                  可转债基础知识 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">番茄炒蛋</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
