@@ -2,9 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.noway.pub/2023/11/06/dayjs-antD/</loc>
+    <loc>https://www.noway.pub/2023/11/30/TypeScript-test-flat/</loc>
     
-    <lastmod>2023-11-06</lastmod>
+    <lastmod>2023-11-30</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,7 +13,16 @@
   <url>
     <loc>https://www.noway.pub/2023/10/28/SPY-double/</loc>
     
-    <lastmod>2023-10-28</lastmod>
+    <lastmod>2023-11-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.noway.pub/2023/11/06/dayjs-antD/</loc>
+    
+    <lastmod>2023-11-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -139,7 +148,7 @@
 
   <url>
     <loc>https://www.noway.pub/</loc>
-    <lastmod>2023-11-06</lastmod>
+    <lastmod>2023-11-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -147,7 +156,7 @@
   
   <url>
     <loc>https://www.noway.pub/tags/web/</loc>
-    <lastmod>2023-11-06</lastmod>
+    <lastmod>2023-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -156,28 +165,28 @@
   
   <url>
     <loc>https://www.noway.pub/categories/typescript/</loc>
-    <lastmod>2023-11-06</lastmod>
+    <lastmod>2023-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.noway.pub/categories/%E7%90%86%E8%B4%A2/</loc>
-    <lastmod>2023-11-06</lastmod>
+    <lastmod>2023-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.noway.pub/categories/web/</loc>
-    <lastmod>2023-11-06</lastmod>
+    <lastmod>2023-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.noway.pub/categories/%E5%8F%A8%E5%8F%A8/</loc>
-    <lastmod>2023-11-06</lastmod>
+    <lastmod>2023-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
