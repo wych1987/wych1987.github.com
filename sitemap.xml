@@ -230,14 +230,14 @@
   </url>
   
   <url>
-    <loc>https://www.noway.pub/categories/%E7%90%86%E8%B4%A2/</loc>
+    <loc>https://www.noway.pub/categories/web/</loc>
     <lastmod>2024-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://www.noway.pub/categories/web/</loc>
+    <loc>https://www.noway.pub/categories/%E7%90%86%E8%B4%A2/</loc>
     <lastmod>2024-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
