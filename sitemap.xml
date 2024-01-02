@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.noway.pub/2024/01/02/2024-stock-rule/</loc>
+    
+    <lastmod>2024-01-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.noway.pub/2023/12/29/review-A-stock/</loc>
     
     <lastmod>2024-01-02</lastmod>
@@ -191,6 +200,13 @@
 
   
   <url>
+    <loc>https://www.noway.pub/tags/%E7%90%86%E8%B4%A2/</loc>
+    <lastmod>2024-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://www.noway.pub/tags/web/</loc>
     <lastmod>2024-01-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -207,7 +223,7 @@
 
   
   <url>
-    <loc>https://www.noway.pub/categories/web/</loc>
+    <loc>https://www.noway.pub/categories/typescript/</loc>
     <lastmod>2024-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -221,7 +237,7 @@
   </url>
   
   <url>
-    <loc>https://www.noway.pub/categories/typescript/</loc>
+    <loc>https://www.noway.pub/categories/web/</loc>
     <lastmod>2024-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
