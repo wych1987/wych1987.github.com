@@ -1,3 +1,4 @@
+https://www.noway.pub/2024/01/04/weixin-shici/
 https://www.noway.pub/2024/01/03/SPY-review/
 https://www.noway.pub/2023/12/29/review-A-stock/
 https://www.noway.pub/2024/01/02/stock-20240102/
@@ -26,6 +27,6 @@ https://www.noway.pub/tags/%E7%90%86%E8%B4%A2/
 https://www.noway.pub/tags/web/
 https://www.noway.pub/tags/OCR/
 https://www.noway.pub/categories/typescript/
-https://www.noway.pub/categories/web/
 https://www.noway.pub/categories/%E7%90%86%E8%B4%A2/
+https://www.noway.pub/categories/web/
 https://www.noway.pub/categories/%E5%8F%A8%E5%8F%A8/
