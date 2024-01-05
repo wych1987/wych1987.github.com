@@ -220,29 +220,29 @@
 
   <url>
     <loc>https://www.noway.pub/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://www.noway.pub/tags/%E7%90%86%E8%B4%A2/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <loc>https://www.noway.pub/tags/web/</loc>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://www.noway.pub/tags/web/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <loc>https://www.noway.pub/tags/%E7%90%86%E8%B4%A2/</loc>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.noway.pub/tags/OCR/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -251,28 +251,28 @@
   
   <url>
     <loc>https://www.noway.pub/categories/typescript/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.noway.pub/categories/%E7%90%86%E8%B4%A2/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.noway.pub/categories/web/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.noway.pub/categories/%E5%8F%A8%E5%8F%A8/</loc>
-    <lastmod>2024-01-04</lastmod>
+    <lastmod>2024-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

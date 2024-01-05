@@ -23,8 +23,8 @@ https://www.noway.pub/about/index.html
 https://www.noway.pub/schedule/index.html
 https://www.noway.pub/2023/09/16/Nullish-coalescing/
 https://www.noway.pub/
-https://www.noway.pub/tags/%E7%90%86%E8%B4%A2/
 https://www.noway.pub/tags/web/
+https://www.noway.pub/tags/%E7%90%86%E8%B4%A2/
 https://www.noway.pub/tags/OCR/
 https://www.noway.pub/categories/typescript/
 https://www.noway.pub/categories/%E7%90%86%E8%B4%A2/
